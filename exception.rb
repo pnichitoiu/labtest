@@ -14,3 +14,5 @@ class CodeFormatException < StandardError
 end
 class ValueFormatException < StandardError
 end
+class CommentWithoutResultException < StandardError
+end

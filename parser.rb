@@ -1,5 +1,4 @@
 require './exception.rb'
-require 'rspec'
 require 'json'
 
 class Parser
@@ -14,24 +13,15 @@ class Parser
   end
 
   def rows
-    rows = Hash.new
-    result_format = %w[identifier index code result]
+    @rows = Hash.new
     File.foreach(file_path) do |line|
       line_a = line.chomp.split(delimiter)
       index = line_a[1]
       # initialize rows index
-      rows[index] = Hash.new unless rows[index]
-      if line.include? "OBX"
-        result_format.zip(line_a) { |x,y| rows[index][x.to_sym] = y }
-      end
-      # fetch comment from the lines containing NTE
-      # and add to the current hash index
-      if line.include? "NTE"
-        rows[index][:comment] = '' unless rows[index][:comment]
-        rows[index][:comment] << '\n' + line_a.last
-      end
+      @rows[index] = Hash.new unless @rows[index]
+      line.include?("OBX") ? parse_result(line_a) : parse_comment(line_a)
     end
-    rows
+    @rows
   end
 
   def mapped_results
@@ -43,12 +33,25 @@ class Parser
           row[:code],
           row_mapper.mapped_value,
           row_mapper.mapped_format,
-          row[:comment].sub('\n', '')
+          row[:comment].nil? ? nil : row[:comment].sub('\n', '')
         )
       )
     end
     mapped_results
   end
+
+  private
+
+  def parse_result(array)
+    %w[identifier index code result].zip(array) { |x,y| @rows[array[1]][x.to_sym] = y }
+  end
+
+  def parse_comment(array)
+    #fetch comment and add it to the result hash index
+    @rows[array[1]][:comment] = '' unless @rows[array[1]][:comment]
+    @rows[array[1]][:comment] << '\n' + array.last
+  end
+
 end
 
 
@@ -126,5 +129,4 @@ class LaboratoryTestResult
 
 end
 
-#parser = Parser.new('results.txt')
-#p parser.mapped_results
+

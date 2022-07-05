@@ -60,6 +60,13 @@ describe Parser do
         end
       end
 
+      it "with a file containing one result and no comment" do
+        results = [LaboratoryTestResult.new('C100', 20.0, 'float', nil)]
+        parser = Parser.new('./spec/results_1_nocomment.txt')
+        parser.mapped_results.each_with_index do |el,key|
+          expect(el.to_json).to eq results[key].to_json
+        end
+      end
     end
 
   end
