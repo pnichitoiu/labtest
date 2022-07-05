@@ -1,0 +1,5 @@
+OBX|1|C100|20.0|
+NTE|1|Comment for C100 result|
+OBX|4|B250|++|
+NTE|4|Comment 1 for ++ result|
+NTE|4|Comment 2 for ++ result|

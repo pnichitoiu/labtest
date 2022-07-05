@@ -1,0 +1,3 @@
+OBX|4|B250|++|
+NTE|4|Comment 1 for ++ result|
+NTE|4|Comment 2 for ++ result|
