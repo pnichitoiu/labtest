@@ -75,7 +75,7 @@ class Mapper
           '+++' => -3
         }
       }
-    }
+    }.freeze
 
   attr_accessor :code, :result
 
@@ -129,4 +129,5 @@ class LaboratoryTestResult
 
 end
 
-
+parser = Parser.new('results.txt')
+p parser.mapped_results
