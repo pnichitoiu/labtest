@@ -129,5 +129,3 @@ class LaboratoryTestResult
 
 end
 
-parser = Parser.new('results.txt')
-p parser.mapped_results
