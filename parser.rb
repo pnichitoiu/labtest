@@ -33,7 +33,7 @@ class Parser
           row[:code],
           row_mapper.mapped_value,
           row_mapper.mapped_format,
-          row[:comment].nil? ? nil : row[:comment].sub('\n', '')
+          row[:comment].nil? ? nil : row[:comment].chomp
         )
       )
     end
@@ -49,7 +49,7 @@ class Parser
   def parse_comment(array)
     #fetch comment and add it to the result hash index
     @rows[array[1]][:comment] = '' unless @rows[array[1]][:comment]
-    @rows[array[1]][:comment] << '\n' + array.last
+    @rows[array[1]][:comment] <<  array.last + "\n"
   end
 
 end
@@ -128,4 +128,7 @@ class LaboratoryTestResult
   end
 
 end
+
+p = Parser.new('results.txt')
+p p.mapped_results
 

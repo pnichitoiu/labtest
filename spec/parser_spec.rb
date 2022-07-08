@@ -20,13 +20,13 @@ describe Parser do
 
       it "with a file containing one result and comment" do
         parser = Parser.new('./spec/results_1_comment.txt')
-        hash = {"1"=>{:identifier=>"OBX", :index=>"1", :code=>"C100", :result=>"20.0", :comment=>"\\nComment for C100 result"}}
+        hash = {"1"=>{:identifier=>"OBX", :index=>"1", :code=>"C100", :result=>"20.0", :comment=>"Comment for C100 result\n"}}
         expect(parser.rows).to eq hash
       end
 
       it "with a file containing one result and 2 comments" do
         parser = Parser.new('./spec/results_2_comments.txt')
-        hash = {"4"=>{:identifier=>"OBX", :index=>"4", :code=>"B250", :result=>"++", :comment=>"\\nComment 1 for ++ result\\nComment 2 for ++ result"}}
+        hash = {"4"=>{:identifier=>"OBX", :index=>"4", :code=>"B250", :result=>"++", :comment=>"Comment 1 for ++ result\nComment 2 for ++ result\n"}}
         expect(parser.rows).to eq hash
       end
 
@@ -42,7 +42,7 @@ describe Parser do
       end
 
       it "with a file containing one result and 2 comments" do
-        results = [LaboratoryTestResult.new('B250', -2, 'nil_3plus', 'Comment 1 for ++ result\\nComment 2 for ++ result')]
+        results = [LaboratoryTestResult.new('B250', -2, 'nil_3plus', "Comment 1 for ++ result\nComment 2 for ++ result")]
         parser = Parser.new('./spec/results_2_comments.txt')
         parser.mapped_results.each_with_index do |el,key|
           expect(el.to_json).to eq results[key].to_json
@@ -52,7 +52,7 @@ describe Parser do
       it "with a file containing 2 results" do
         results = [
             LaboratoryTestResult.new('C100', 20.0, 'float', 'Comment for C100 result'),
-            LaboratoryTestResult.new('B250', -2, 'nil_3plus', 'Comment 1 for ++ result\\nComment 2 for ++ result'),
+            LaboratoryTestResult.new('B250', -2, 'nil_3plus', "Comment 1 for ++ result\nComment 2 for ++ result"),
           ]
         parser = Parser.new('./spec/results_2_results.txt')
         parser.mapped_results.each_with_index do |el,key|
